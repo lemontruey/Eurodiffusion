@@ -1,14 +1,17 @@
 ﻿namespace Eurodiffusion
 {
-    using System.Collections.Generic;
+    using System;
 
     public class Country
     {
-        public List<City> Cities { get; set; }
+        public City[,] Cities { get; set; }
 
         public Country(InputCoordinates coordinates, string countryName)
         {
-            Cities = new List<City>();
+            int countryLength = Math.Abs(coordinates.XL - coordinates.XH);
+            int countryHeight = Math.Abs(coordinates.YL - coordinates.YH);
+
+            Cities = new City[countryLength, countryHeight];
 
             InitCities(coordinates, countryName);
         }
@@ -19,7 +22,7 @@
             {
                 for (int j = coordinates.YL; j <= coordinates.YH; j++)
                 {
-                    Cities.Add(new City(i, j, countryName));
+                    Cities[i,j] = new City(i, j, countryName);
                 }
             }
         }

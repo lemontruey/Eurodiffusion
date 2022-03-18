@@ -1,7 +1,5 @@
 ﻿namespace Eurodiffusion
 {
-    using System.Linq;
-    using System.Linq.Expressions;
     public class Grid
     {
         private const int GRID_MAX_VALUE = 11;
@@ -26,12 +24,19 @@
 
                 _countries[i] = new Country(inputCoordinates, inputCountryName);
 
-                CopyCities(_countries[i]);
+                CopyCities(_countries[i], inputCoordinates);
             }
         }
 
-        private void CopyCities(Country country)
+        private void CopyCities(Country country, InputCoordinates coordinates)
         {
+            for (int x = coordinates.XL, i = 0; x <= coordinates.XH; i++, x++)
+            {
+                for (int y = coordinates.XL, j = 0; y < coordinates.XH; j++, y++)
+                {
+                    _grid[x, y] = country.Cities[i, j];
+                }
+            }
         }
 
         public void StartEuroDiffusion()
