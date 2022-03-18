@@ -2,15 +2,21 @@
 {
     public class City
     {
-        private readonly int _axisX;
-        private readonly int _axisY;
-        private readonly string _countryName;
+        private const int BASE_CITY_AMOUNT = 1;
 
-        public City(int axisX, int axisY, string countryName)
+        public int axisXPosition { get; set; }
+        public int axisYPosition { get; set; }
+        public string countryName { get; set; }
+
+        public int AmountRevenue { get; set; }
+
+        public City(int axisXPosition, int axisYPosition, string countryName)
         {
-            _axisX = axisX;
-            _axisY = axisY;
-            _countryName = countryName;
+            this.axisXPosition = axisXPosition;
+            this.axisYPosition = axisYPosition;
+            this.countryName = countryName;
+
+            AmountRevenue = BASE_CITY_AMOUNT;
         }
     }
 }

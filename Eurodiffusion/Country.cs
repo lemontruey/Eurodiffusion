@@ -1,24 +1,25 @@
 ﻿namespace Eurodiffusion
 {
-    internal class Country
+    using System.Collections.Generic;
+
+    public class Country
     {
-        private readonly int[,] country;
+        public List<City> Cities { get; set; }
 
-        public Country(int citiesX, int citiesY)
+        public Country(InputCoordinates coordinates, string countryName)
         {
-            country = new int[citiesX, citiesY];
+            Cities = new List<City>();
 
-            InitCities(citiesX, citiesY);
+            InitCities(coordinates, countryName);
         }
 
-        private void InitCities(int citiesX, int citiesY)
+        private void InitCities(InputCoordinates coordinates, string countryName)
         {
-            int initBasePointValue = 1;
-            for (int i = 0; i < citiesX; i++)
+            for (int i = coordinates.XL; i <= coordinates.XH; i++)
             {
-                for (int j = 0; j < citiesY; i++)
+                for (int j = coordinates.YL; j <= coordinates.YH; j++)
                 {
-                    country[i, j] = initBasePointValue;
+                    Cities.Add(new City(i, j, countryName));
                 }
             }
         }
