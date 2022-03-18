@@ -1,11 +1,14 @@
 ﻿namespace Eurodiffusion
 {
-    public class Grid
+    public partial class Grid
     {
         private const int GRID_MAX_VALUE = 11;
+        private const int MIN_COUNTRIES_AMOUNT = 1;
 
         private readonly Country[] _countries;
         private readonly City[,] _grid;
+
+        private int _euroDiffusionDays = 1;
 
         public Grid(InputParams inputParams)
         {
@@ -15,33 +18,29 @@
             InitGrid(inputParams);
         }
 
-        private void InitGrid(InputParams inputParams)
-        {
-            for (int i = 0; i < inputParams.CountryCount; i++)
-            {
-                var inputCoordinates = inputParams.Coordinates[i];
-                var inputCountryName = inputParams.CountryName[i];
-
-                _countries[i] = new Country(inputCoordinates, inputCountryName);
-
-                CopyCities(_countries[i], inputCoordinates);
-            }
-        }
-
-        private void CopyCities(Country country, InputCoordinates coordinates)
-        {
-            for (int x = coordinates.XL, i = 0; x <= coordinates.XH; i++, x++)
-            {
-                for (int y = coordinates.XL, j = 0; y < coordinates.XH; j++, y++)
-                {
-                    _grid[x, y] = country.Cities[i, j];
-                }
-            }
-        }
-
         public void StartEuroDiffusion()
         {
+            if (_countries.Length < MIN_COUNTRIES_AMOUNT)
+                return;
+            if (_countries.Length == MIN_COUNTRIES_AMOUNT)
+            {
+                // спец. случай
+            }
 
+            bool is_map_full = false;
+            while (!is_map_full)
+            {
+                for (int i = 0; i < _grid.Length; i++)
+                {
+                    for (int j = 0; j < _grid.Length; j++)
+                    {
+                        if (_grid[i, j] != null) 
+                            _grid[i, j].TransferToNeighbours(GetNeighboursCities(i, j));
+                    }
+                }
+
+
+            }
         }
     }
 }
