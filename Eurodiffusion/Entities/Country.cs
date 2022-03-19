@@ -5,12 +5,16 @@
     public class Country
     {
         public City[,] Cities { get; set; }
+        public string Name { get; set; }
+        public bool IsFulfilled { get; }
 
         public Country(InputCoordinates coordinates, string countryName)
         {
             int countryLength = Math.Abs(coordinates.XL - coordinates.XH);
             int countryHeight = Math.Abs(coordinates.YL - coordinates.YH);
 
+            Name = countryName;
+            IsFulfilled = false;
             Cities = new City[countryLength, countryHeight];
 
             InitCities(coordinates, countryName);

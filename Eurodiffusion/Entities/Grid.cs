@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace Eurodiffusion
+﻿namespace Eurodiffusion
 {
+    using System.Text;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public partial class Grid
     {
         private const int GRID_MAX_VALUE = 11;
@@ -23,6 +25,16 @@ namespace Eurodiffusion
             }
         }
 
+        public string GetResultString()
+        {
+            StringBuilder str = new StringBuilder();
+            foreach (var country in _countries)
+            {
+                str.Append($"{country.Name}");
+            }
+            return "";
+        }
+
         public void StartEuroDiffusion()
         {
             if (_countries.Length < MIN_COUNTRIES_AMOUNT)
@@ -40,7 +52,19 @@ namespace Eurodiffusion
                     }
                 }
 
+                //подсчёт в конце дня
+                //ещё один цикл необходим, т.к. происходят внешние манипуляции с перемещением
+                for (int i = 0; i < _grid.Length; i++)
+                {
+                    for (int j = 0; j < _grid.Length; j++)
+                    {
+                        if (_grid[i, j] != null)
+                            _grid[i, j].FinalizeCoinBalancePerDay();
+                    }
+                }
 
+                is_map_full = _countries.All(x => x.IsFulfilled);
+                _euroDiffusionDays++;
             }
         }
     }

@@ -20,11 +20,11 @@
                 
             }
 
-            Grid grid = new Grid(Initializer.Initialize(str.ToString()));
+            Grid grid = new Grid(Initializer.Initialize(str.ToString()) );
 
             grid.StartEuroDiffusion();
 
-            Console.WriteLine();
+            Console.WriteLine(grid.GetResultString());
         }
     }
 }
