@@ -26,7 +26,7 @@
 
         // город перечисляет или страна? 
         // тут данных больше, поэтому пусть сам город перечисляет
-        public void TransferToNeighbours(IList<City> neighboursCities)
+        public void TransferCoinsToNeighbours(IList<City> neighboursCities)
         {
             
         }
