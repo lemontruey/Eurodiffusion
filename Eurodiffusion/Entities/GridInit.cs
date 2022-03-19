@@ -20,7 +20,7 @@
         {
             for (int x = coordinates.XL, i = 0; x <= coordinates.XH; i++, x++)
             {
-                for (int y = coordinates.YL, j = 0; y < coordinates.YH; j++, y++)
+                for (int y = coordinates.YL, j = 0; y <= coordinates.YH; j++, y++)
                 {
                     _grid[x, y] = country.Cities[i, j];
                 }

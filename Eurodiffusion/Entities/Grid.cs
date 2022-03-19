@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Eurodiffusion
+﻿namespace Eurodiffusion
 {
     using System.Text;
     using System.Collections.Generic;
@@ -16,26 +14,22 @@ namespace Eurodiffusion
 
         private int _euroDiffusionDays = 1;
 
-        public Grid(List<InputParams> inputParams)
+        public Grid(InputParams inputParams)
         {
-            foreach (var parameter in inputParams)
-            {
-                _countries = new Country[parameter.CountryCount];
-                _grid = new City[GRID_MAX_VALUE, GRID_MAX_VALUE];
+            _countries = new Country[inputParams.CountryCount];
+            _grid = new City[GRID_MAX_VALUE, GRID_MAX_VALUE];
 
-                InitGrid(parameter);
-            }
+            InitGrid(inputParams);
         }
 
         public string GetResultString()
         {
             StringBuilder str = new StringBuilder();
-            for(int i = 0; i < _countries.Length; i++)
+            foreach (var country in _countries)
             {
-                str.Append($"Case Number { i + 1 }");
-                str.Append($"{_countries[i].Name} {_euroDiffusionDays}");
+                str.Append($"{country.Name} {_euroDiffusionDays}" + "\n");
             }
-            return "";
+            return str.ToString();
         }
 
         public void StartEuroDiffusion()
@@ -43,36 +37,31 @@ namespace Eurodiffusion
             if (_countries.Length < MIN_COUNTRIES_AMOUNT)
                 return;
 
-            bool is_map_full = false;
-            while (!is_map_full)
+            bool isMapFull = false;
+            while (!isMapFull)
             {
-                for (int dimension = 0; dimension < _grid.Rank; dimension++)
+                for (int i = 0; i < _grid.GetLength(0); i++)
                 {
-                    for (int i = 0; i < _grid.GetLength(dimension); i++)
+                    for (int j = 0; j < _grid.GetLength(1); j++)
                     {
-                        for (int j = 0; j < _grid.GetLength(dimension); j++)
-                        {
-                            if (_grid[i, j] != null)
-                                _grid[i, j].TransferCoinsToNeighbours(GetNeighboursCities(i, j));
-                        }
+                        if (_grid[i, j] != null)
+                            _grid[i, j].TransferCoinsToNeighbours(GetNeighboursCities(i, j));
                     }
                 }
+                
 
                 //подсчёт в конце дня
                 //ещё один цикл необходим, т.к. происходят внешние манипуляции с перемещением
-                for (int dimension = 0; dimension < _grid.Rank; dimension++)
+                for (int i = 0; i < _grid.GetLength(0); i++)
                 {
-                    for (int i = 0; i < _grid.GetLength(dimension); i++)
+                    for (int j = 0; j < _grid.GetLength(1); j++)
                     {
-                        for (int j = 0; j < _grid.GetLength(dimension); j++)
-                        {
-                            if (_grid[i, j] != null)
-                                _grid[i, j].FinalizeCoinBalancePerDay();
-                        }
+                        if (_grid[i, j] != null)
+                            _grid[i, j].FinalizeCoinBalancePerDay();
                     }
                 }
 
-                is_map_full = _countries.All(x => x.IsFulfilled);
+                isMapFull = _countries.All(x => x.IsFulfilled);
                 _euroDiffusionDays++;
             }
         }

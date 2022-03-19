@@ -46,14 +46,11 @@
 
         private IEnumerable<bool> CheckCitiesFullness()
         {
-            for (int dimension = 0; dimension < Cities.Rank; dimension++)
+            for (int i = 0; i < Cities.GetLength(0); i++)
             {
-                for (int i = 0; i < Cities.GetLength(dimension); i++)
+                for (int j = 0; j < Cities.GetLength(1); j++)
                 {
-                    for (int j = 0; j < Cities.GetLength(dimension); j++)
-                    {
-                        yield return Cities[i, j].IsFulfilled;
-                    }
+                    yield return Cities[i, j].IsFulfilled;
                 }
             }
         }

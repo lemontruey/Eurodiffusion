@@ -32,7 +32,8 @@
                 foreach (var neighbour in neighboursCities)
                 {
                     CoinBalance[coinPerDayPair.Key] -= coinPerDayPair.Value;
-                    neighbour.CoinBalance[coinPerDayPair.Key] += coinPerDayPair.Value;
+                    if (!neighbour.CoinBalance.TryAdd(coinPerDayPair.Key, coinPerDayPair.Value))
+                        neighbour.CoinBalance[coinPerDayPair.Key] += coinPerDayPair.Value;
                 }
             }
         }
@@ -45,7 +46,16 @@
                 CoinBalancePerDay[coinPerDayPair.Key] = 0;
             }
 
-            // проставить IsFulfilled
+            if (!IsFulfilled)
+            {
+                foreach (var coinPerDayPair in CoinBalancePerDay)
+                {
+                    if (CoinBalance[coinPerDayPair.Key] == 0)
+                        return;
+                }
+
+                IsFulfilled = true;
+            }
         }
     }
 }

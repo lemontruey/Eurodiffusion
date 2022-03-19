@@ -8,7 +8,7 @@
     {
         static void Main(string[] args)
         {
-            StringBuilder str = new StringBuilder(0);
+            StringBuilder str = new StringBuilder();
             using (FileStream fs = new FileStream("input.txt", FileMode.Open))
             {
                 byte[] b = new byte[1024];
@@ -19,11 +19,17 @@
                 }
             }
 
-            Grid grid = new Grid(Initializer.Initialize(str.ToString()) );
+            var parameters = Initializer.Initialize(str.ToString());
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                Grid grid = new Grid(parameters[i]);
 
-            grid.StartEuroDiffusion();
+                grid.StartEuroDiffusion();
 
-            Console.WriteLine(grid.GetResultString());
+                Console.WriteLine($"Case Number {i + 1}");
+                Console.WriteLine(grid.GetResultString());
+            }
+            Console.ReadLine();
         }
     }
 }
