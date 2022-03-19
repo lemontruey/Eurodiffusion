@@ -1,4 +1,6 @@
-﻿namespace Eurodiffusion
+﻿using System;
+
+namespace Eurodiffusion
 {
     using System.Text;
     using System.Collections.Generic;
@@ -28,9 +30,10 @@
         public string GetResultString()
         {
             StringBuilder str = new StringBuilder();
-            foreach (var country in _countries)
+            for(int i = 0; i < _countries.Length; i++)
             {
-                str.Append($"{country.Name}");
+                str.Append($"Case Number { i + 1 }");
+                str.Append($"{_countries[i].Name} {_euroDiffusionDays}");
             }
             return "";
         }
@@ -43,23 +46,29 @@
             bool is_map_full = false;
             while (!is_map_full)
             {
-                for (int i = 0; i < _grid.Length; i++)
+                for (int dimension = 0; dimension < _grid.Rank; dimension++)
                 {
-                    for (int j = 0; j < _grid.Length; j++)
+                    for (int i = 0; i < _grid.GetLength(dimension); i++)
                     {
-                        if (_grid[i, j] != null) 
-                            _grid[i, j].TransferCoinsToNeighbours( GetNeighboursCities(i, j) );
+                        for (int j = 0; j < _grid.GetLength(dimension); j++)
+                        {
+                            if (_grid[i, j] != null)
+                                _grid[i, j].TransferCoinsToNeighbours(GetNeighboursCities(i, j));
+                        }
                     }
                 }
 
                 //подсчёт в конце дня
                 //ещё один цикл необходим, т.к. происходят внешние манипуляции с перемещением
-                for (int i = 0; i < _grid.Length; i++)
+                for (int dimension = 0; dimension < _grid.Rank; dimension++)
                 {
-                    for (int j = 0; j < _grid.Length; j++)
+                    for (int i = 0; i < _grid.GetLength(dimension); i++)
                     {
-                        if (_grid[i, j] != null)
-                            _grid[i, j].FinalizeCoinBalancePerDay();
+                        for (int j = 0; j < _grid.GetLength(dimension); j++)
+                        {
+                            if (_grid[i, j] != null)
+                                _grid[i, j].FinalizeCoinBalancePerDay();
+                        }
                     }
                 }
 

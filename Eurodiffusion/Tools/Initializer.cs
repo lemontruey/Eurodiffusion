@@ -9,7 +9,7 @@
         {
             var inputParams = new List<InputParams>();
 
-            string[] partialStrings = inputString.Split('\n');
+            string[] partialStrings = inputString.Replace("\r", "").Replace("\0", "").Split('\n');
             for (int i = 0; i < partialStrings.Length; i++)
             {
                 var inputParameter = new InputParams();
@@ -22,7 +22,7 @@
 
                     if (countryCount == 0) break;
 
-                    for (int j = i + 1, iterator = 0; j < i + countryCount; j++, iterator++)
+                    for (int j = i + 1, iterator = 0; j <= i + countryCount; j++, iterator++)
                     {
                         string[] str = partialStrings[j].Split(' ');
                         inputParameter.CountryName[iterator] = str[0];
@@ -45,7 +45,7 @@
         {
             foreach (char c in str)
             {
-                if (c < '0' || c > '9')
+                if (!char.IsDigit(c))
                     return false;
             }
 

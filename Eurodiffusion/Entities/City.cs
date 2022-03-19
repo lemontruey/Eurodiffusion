@@ -9,7 +9,7 @@
         public int AxisXPosition { get; set; }
         public int AxisYPosition { get; set; }
         public string CountryName { get; set; }
-        public bool IsFulfilled { get; }
+        public bool IsFulfilled { get; private set; }
 
         public Dictionary<string, int> CoinBalancePerDay { get; set; }
         public Dictionary<string, int> CoinBalance { get; set; }
@@ -22,6 +22,7 @@
             IsFulfilled = false;
 
             CoinBalance = new Dictionary<string, int> { { countryName, INITIAL_CITY_COIN_BALANCE } };
+            CoinBalancePerDay = new Dictionary<string, int> { { countryName, INITIAL_CITY_COIN_BALANCE } };
         }
         
         public void TransferCoinsToNeighbours(IList<City> neighboursCities)
@@ -43,6 +44,8 @@
                 CoinBalance[coinPerDayPair.Key] += coinPerDayPair.Value;
                 CoinBalancePerDay[coinPerDayPair.Key] = 0;
             }
+
+            // проставить IsFulfilled
         }
     }
 }

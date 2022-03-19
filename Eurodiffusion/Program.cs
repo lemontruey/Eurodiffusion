@@ -17,7 +17,6 @@
                 {
                     str.Append(temp.GetString(b));
                 }
-                
             }
 
             Grid grid = new Grid(Initializer.Initialize(str.ToString()) );
