@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Text.RegularExpressions;
 
     public static class Initializer
     {
@@ -24,14 +25,31 @@
 
                     for (int j = i + 1, iterator = 0; j <= i + countryCount; j++, iterator++)
                     {
-                        string[] str = partialStrings[j].Split(' ');
-                        inputParameter.CountryName[iterator] = str[0];
-                        inputParameter.Coordinates[iterator] = new InputCoordinates(
-                            str[1].ToInt32(),
-                            str[2].ToInt32(),
-                            str[3].ToInt32(),
-                            str[4].ToInt32()
+                        try
+                        {
+                            string[] str = Regex.Replace(partialStrings[j], @"\s+", " ").Split(' ');
+                            inputParameter.CountryName[iterator] = str[0];
+                            inputParameter.Coordinates[iterator] = new InputCoordinates(
+                                str[1].ToInt32(),
+                                str[2].ToInt32(),
+                                str[3].ToInt32(),
+                                str[4].ToInt32()
                             );
+                        }
+                        catch (FormatException e)
+                        {
+                            Console.WriteLine("Suggested input format: " + "\n\n" +
+                                              "Number of countries (:integer)" + "\n" +
+                                              "CountryName(:string) xl yl xh yh" + "\n" +
+                                              "(1 <= xl <= xh <= 10)" + "\n" +
+                                              "(1 <= yl <= yh <= 10)" + "\n");
+                            throw;
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                            throw;
+                        }
                     }
 
                     inputParams.Add(inputParameter);
