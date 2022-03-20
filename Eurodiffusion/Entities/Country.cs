@@ -7,19 +7,12 @@
     {
         private readonly int _countryLength;
         private readonly int _countryHeight;
-        private bool _isFulfilled;
 
         public City[,] Cities { get; set; }
         public string Name { get; set; }
 
-        public bool IsFulfilled
-        {
-            get
-            {
-                return CheckCitiesFullness().All(x => x);
-            }
-            private set => _isFulfilled = value;
-        }
+        public bool IsFulfilled { get; private set; }
+        public int DaysToComplete { get; set; }
 
         public Country(InputCoordinates coordinates, string countryName)
         {
@@ -31,6 +24,14 @@
             Cities = new City[_countryLength, _countryHeight];
 
             InitCities(coordinates, countryName);
+        }
+
+        public bool CheckIsCountryFulfilled(int days)
+        {
+            IsFulfilled = CheckCitiesFullness().All(x => x);
+            if (IsFulfilled)
+                DaysToComplete = days;
+            return IsFulfilled;
         }
 
         private void InitCities(InputCoordinates coordinates, string countryName)

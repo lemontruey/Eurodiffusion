@@ -5,7 +5,8 @@
 
     public class City
     {
-        private const int INITIAL_CITY_COIN_BALANCE = 1000;
+        private const int INITIAL_CITY_COIN_BALANCE = 1000000;
+        private const int REPRESENTATIVE_PORTION = 1000;
 
         public int AxisXPosition { get; set; }
         public int AxisYPosition { get; set; }
@@ -34,9 +35,11 @@
                 {
                     if (CoinBalance[coinPerDayPair.Key] > 0)
                     {
-                        // отправляем же не всё... а одну монету(?)..
-                        CoinBalance[coinPerDayPair.Key]--;
-                        neighbour.CoinBalancePerDay.Addition(coinPerDayPair.Key, 1);
+                        int transactionAmount = coinPerDayPair.Value / REPRESENTATIVE_PORTION;
+                        CoinBalance[coinPerDayPair.Key] -= transactionAmount;
+
+                        var neighborC = $"{neighbour.AxisXPosition}; {neighbour.AxisYPosition}  {neighbour.CountryName}";
+                        neighbour.CoinBalancePerDay.Addition(coinPerDayPair.Key, transactionAmount);
                     }
                 }
             }

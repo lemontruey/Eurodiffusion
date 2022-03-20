@@ -29,11 +29,13 @@
 
         private List<City> GetNeighboursCities(int x, int y)
         {
+            // Order is important, because neighbours are iterating in following order
+            // below -> upwards, left -> right, clockwise
             var neighbours = new List<City>();
-            if (_grid[x + 1, y] != null) neighbours.Add(_grid[x + 1, y]);
-            if (_grid[x - 1, y] != null) neighbours.Add(_grid[x - 1, y]);
             if (_grid[x, y + 1] != null) neighbours.Add(_grid[x, y + 1]);
+            if (_grid[x + 1, y] != null) neighbours.Add(_grid[x + 1, y]);
             if (_grid[x, y - 1] != null) neighbours.Add(_grid[x, y - 1]);
+            if (_grid[x - 1, y] != null) neighbours.Add(_grid[x - 1, y]);
 
             return neighbours;
         }

@@ -25,9 +25,9 @@
         public string GetResultString()
         {
             StringBuilder str = new StringBuilder();
-            foreach (var country in _countries)
+            foreach (var country in _countries.OrderBy(x => x.DaysToComplete))
             {
-                str.Append($"{country.Name} {_euroDiffusionDays}" + "\n");
+                str.Append($"{country.Name} {country.DaysToComplete}" + "\n");
             }
             return str.ToString();
         }
@@ -40,6 +40,7 @@
             bool isMapFull = false;
             while (!isMapFull)
             {
+                _euroDiffusionDays++;
                 for (int i = 0; i < _grid.GetLength(0); i++)
                 {
                     for (int j = 0; j < _grid.GetLength(1); j++)
@@ -49,9 +50,6 @@
                     }
                 }
                 
-
-                //подсчёт в конце дня
-                //ещё один цикл необходим, т.к. происходят внешние манипуляции с перемещением
                 for (int i = 0; i < _grid.GetLength(0); i++)
                 {
                     for (int j = 0; j < _grid.GetLength(1); j++)
@@ -61,8 +59,14 @@
                     }
                 }
 
-                isMapFull = _countries.All(x => x.IsFulfilled);
-                _euroDiffusionDays++;
+                bool isAnyCountryFull = true;
+                foreach (var country in _countries.Where(x => !x.IsFulfilled))
+                {
+                    if (!country.CheckIsCountryFulfilled(_euroDiffusionDays))
+                        isAnyCountryFull = false;
+                }
+
+                isMapFull = isAnyCountryFull;
             }
         }
     }
