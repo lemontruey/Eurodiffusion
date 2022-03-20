@@ -12,7 +12,7 @@
         private readonly Country[] _countries;
         private readonly City[,] _grid;
 
-        private int _euroDiffusionDays = 1;
+        private int _euroDiffusionDays = 0;
 
         public Grid(InputParams inputParams)
         {
@@ -57,7 +57,7 @@
                     for (int j = 0; j < _grid.GetLength(1); j++)
                     {
                         if (_grid[i, j] != null)
-                            _grid[i, j].FinalizeCoinBalancePerDay();
+                            _grid[i, j].FinalizeCoinBalancePerDay(_countries.Length);
                     }
                 }
 
