@@ -14,7 +14,7 @@
             for (int i = 0; i < partialStrings.Length; i++)
             {
                 var inputParameter = new InputParams();
-                if (IsDigitsOnly(partialStrings[i]))
+                if (IsDigitsOnly(partialStrings[i].Trim()))
                 {
                     int countryCount = partialStrings[i].ToInt32();
                     inputParameter.CountryCount = countryCount;

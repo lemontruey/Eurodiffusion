@@ -24,10 +24,11 @@
             {
                 Grid grid = new Grid(parameters[i]);
 
-                grid.StartEuroDiffusion();
+                IAlgorithm algorithm = new SimpleGraph(grid);
+                algorithm.StartEuroDiffusion();
 
                 Console.WriteLine($"Case Number {i + 1}");
-                Console.WriteLine(grid.GetResultString());
+                Console.WriteLine(algorithm.GetResultString());
             }
             Console.ReadLine();
         }
