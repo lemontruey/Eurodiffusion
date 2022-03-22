@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Algorithms\DfsGraph.cs" />
+    <Compile Remove="Tools\Validator.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="input.txt" />
   </ItemGroup>
 

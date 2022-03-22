@@ -36,7 +36,7 @@
                                 str[4].ToInt32()
                             );
                         }
-                        catch (FormatException e)
+                        catch (FormatException)
                         {
                             Console.WriteLine("Suggested input format: " + "\n\n" +
                                               "Number of countries (:integer)" + "\n" +

@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using System.Text;
-    public class GraphAlgorithm : IAlgorithm
+    public abstract class GraphAlgorithm : IAlgorithm
     {
         protected const int GRID_MAX_VALUE = 11;
         protected const int MIN_COUNTRIES_AMOUNT = 1;
@@ -11,9 +11,7 @@
         protected City[,] _grid;
 
         protected int _euroDiffusionDays;
-        public virtual void StartEuroDiffusion()
-        {
-        }
+        public abstract void StartEuroDiffusion();
 
         public string GetResultString()
         {
