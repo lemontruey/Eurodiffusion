@@ -8,7 +8,7 @@
         private readonly int _countryLength;
         private readonly int _countryHeight;
 
-        public City[,] Cities { get; set; }
+        public List<City> Cities { get; set; }
         public string Name { get; set; }
 
         public bool IsFulfilled { get; private set; }
@@ -21,14 +21,13 @@
 
             IsFulfilled = false;
             Name = countryName;
-            Cities = new City[_countryLength, _countryHeight];
 
             InitCities(coordinates, countryName);
         }
 
         public bool CheckIsCountryFulfilled(int days)
         {
-            IsFulfilled = CheckCitiesFullness().All(x => x);
+            IsFulfilled = Cities.Select(x => x).All(x => x.IsFulfilled);
             if (IsFulfilled)
                 DaysToComplete = days;
             return IsFulfilled;
@@ -36,22 +35,18 @@
 
         private void InitCities(InputCoordinates coordinates, string countryName)
         {
+            Cities = new List<City>(_countryLength);
+            
+            // TODO: Linq
             for (int i = 0; i < _countryLength; i++)
             {
                 for (int j = 0; j < _countryHeight; j++)
                 {
-                    Cities[i,j] = new City(i + coordinates.XL, j + coordinates.YL, countryName);
-                }
-            }
-        }
-
-        private IEnumerable<bool> CheckCitiesFullness()
-        {
-            for (int i = 0; i < Cities.GetLength(0); i++)
-            {
-                for (int j = 0; j < Cities.GetLength(1); j++)
-                {
-                    yield return Cities[i, j].IsFulfilled;
+                    Cities.Add(new City(
+                        i + coordinates.XL,
+                        j + coordinates.YL,
+                        countryName)
+                    );
                 }
             }
         }

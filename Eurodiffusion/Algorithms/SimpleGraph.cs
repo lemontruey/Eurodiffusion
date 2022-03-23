@@ -2,63 +2,47 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System;
 
     public class SimpleGraph : GraphAlgorithm
     {
-        public SimpleGraph(InputParams inputCoordinates)
+        public SimpleGraph(InputParams inputParams)
         {
-            Grid grid = new Grid(inputCoordinates);
-            _grid = grid.CityGrid;
-            _countries = grid.Countries;
+            Countries = new Agregator(inputParams).Countries;
         }
 
         public override void StartEuroDiffusion()
         {
-            if (_countries.Length < MIN_COUNTRIES_AMOUNT)
+            if (Countries.Count < MinCountriesAmount)
                 return;
 
             bool isMapFull = false;
             while (!isMapFull)
             {
-                _euroDiffusionDays++;
-                for (int i = 0; i < _grid.GetLength(0); i++)
+                EuroDiffusionDays++;
+
+                Countries
+                    .SelectMany(c => c.Cities.Select(city => city))
+                    .Where(city => city != null)
+                    .ToList()
+                    .ForEach(city => city.TransferCoinsToNeighbours());
+
+
+                Countries
+                    .SelectMany(c => c.Cities.Select(city => city))
+                    .Where(city => city != null)
+                    .ToList()
+                    .ForEach(city => city.FinalizeCoinBalancePerDay(Countries.Count));
+
+                bool isAnyCountriesFull = true;
+                foreach (var country in Countries.Where(x => !x.IsFulfilled))
                 {
-                    for (int j = 0; j < _grid.GetLength(1); j++)
-                    {
-                        if (_grid[i, j] != null)
-                            _grid[i, j].TransferCoinsToNeighbours(GetNeighboursCities(i, j));
-                    }
+                    if (!country.CheckIsCountryFulfilled(EuroDiffusionDays))
+                        isAnyCountriesFull = false;
                 }
 
-                for (int i = 0; i < _grid.GetLength(0); i++)
-                {
-                    for (int j = 0; j < _grid.GetLength(1); j++)
-                    {
-                        if (_grid[i, j] != null)
-                            _grid[i, j].FinalizeCoinBalancePerDay(_countries.Length);
-                    }
-                }
-
-                bool isAnyCountryFull = true;
-                foreach (var country in _countries.Where(x => !x.IsFulfilled))
-                {
-                    if (!country.CheckIsCountryFulfilled(_euroDiffusionDays))
-                        isAnyCountryFull = false;
-                }
-
-                isMapFull = isAnyCountryFull;
+                isMapFull = isAnyCountriesFull;
             }
-        }
-
-        private List<City> GetNeighboursCities(int x, int y)
-        {
-            var neighbours = new List<City>();
-            if (_grid[x, y + 1] != null) neighbours.Add(_grid[x, y + 1]);
-            if (_grid[x + 1, y] != null) neighbours.Add(_grid[x + 1, y]);
-            if (_grid[x, y - 1] != null) neighbours.Add(_grid[x, y - 1]);
-            if (_grid[x - 1, y] != null) neighbours.Add(_grid[x - 1, y]);
-
-            return neighbours;
         }
     }
 }

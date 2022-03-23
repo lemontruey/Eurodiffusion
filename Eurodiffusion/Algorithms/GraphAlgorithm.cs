@@ -1,22 +1,22 @@
 ﻿namespace Eurodiffusion
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     public abstract class GraphAlgorithm : IAlgorithm
     {
         protected const int GRID_MAX_VALUE = 11;
-        protected const int MIN_COUNTRIES_AMOUNT = 1;
+        protected const int MinCountriesAmount = 1;
 
-        protected Country[] _countries;
-        protected City[,] _grid;
+        protected List<Country> Countries;
 
-        protected int _euroDiffusionDays;
+        protected int EuroDiffusionDays;
         public abstract void StartEuroDiffusion();
 
         public string GetResultString()
         {
             StringBuilder str = new StringBuilder();
-            foreach (var country in _countries.OrderBy(x => x.DaysToComplete))
+            foreach (var country in Countries.OrderBy(x => x.DaysToComplete))
             {
                 str.Append($"{country.Name} {country.DaysToComplete}" + "\n");
             }
