@@ -38,7 +38,6 @@
                         int transactionAmount = coinPerDayPair.Value / REPRESENTATIVE_PORTION;
                         CoinBalance[coinPerDayPair.Key] -= transactionAmount;
 
-                        var neighborC = $"{neighbour.AxisXPosition}; {neighbour.AxisYPosition}  {neighbour.CountryName}";
                         neighbour.CoinBalancePerDay.Addition(coinPerDayPair.Key, transactionAmount);
                     }
                 }
@@ -55,7 +54,6 @@
 
             if (!IsFulfilled)
             {
-                // костыль или решение?
                 if (CoinBalance.Keys.Count == countryCount && CoinBalance.Values.All(x => x > 0))
                     IsFulfilled = true;
             }

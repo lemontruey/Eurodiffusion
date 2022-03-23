@@ -9,22 +9,32 @@
         static void Main(string[] args)
         {
             StringBuilder str = new StringBuilder();
-            using (FileStream fs = new FileStream("input.txt", FileMode.Open))
+            try
             {
-                byte[] b = new byte[1024];
-                UTF8Encoding temp = new UTF8Encoding(true);
-                while (fs.Read(b, 0, b.Length) > 0)
+                using (FileStream fs = new FileStream("input.txt", FileMode.Open))
                 {
-                    str.Append(temp.GetString(b));
+                    byte[] b = new byte[1024];
+                    UTF8Encoding temp = new UTF8Encoding(true);
+                    while (fs.Read(b, 0, b.Length) > 0)
+                    {
+                        str.Append(temp.GetString(b));
+                    }
                 }
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Missing input file!" + "\n" +
+                                  "Acceptable filename: input.txt" + "\n");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
             var parameters = Initializer.Initialize(str.ToString());
             for (int i = 0; i < parameters.Count; i++)
             {
-                Grid grid = new Grid(parameters[i]);
-
-                IAlgorithm algorithm = new SimpleGraph(grid);
+                IAlgorithm algorithm = new SimpleGraph(parameters[i]);
                 algorithm.StartEuroDiffusion();
 
                 Console.WriteLine($"Case Number {i + 1}");
