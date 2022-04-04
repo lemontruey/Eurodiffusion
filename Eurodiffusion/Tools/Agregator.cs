@@ -31,9 +31,9 @@
             foreach (var city in Countries.SelectMany(c => c.Cities))
             {
                 city.NeighbourCities = Countries
-                    .SelectMany(c => c.Cities.Select(city => city))
-                    .Where(c => Math.Abs(c.AxisXPosition - city.AxisXPosition) == 1)
-                    .Where(c => Math.Abs(c.AxisYPosition - city.AxisYPosition) == 1)
+                    .SelectMany(c => c.Cities.Select(x => x))
+                    .Where(c => (Math.Abs(c.AxisXPosition - city.AxisXPosition) == 1 && c.AxisYPosition == city.AxisYPosition) ||
+                                    (Math.Abs(c.AxisYPosition - city.AxisYPosition) == 1 && c.AxisXPosition == city.AxisXPosition))
                     .ToList();
             }
         }
